@@ -30,6 +30,7 @@ import org.springframework.boot.gradle.dsl.SpringBootExtension;
 import org.springframework.boot.gradle.tasks.bundling.BootBuildImage;
 import org.springframework.boot.gradle.tasks.bundling.BootJar;
 import org.springframework.boot.gradle.tasks.bundling.BootWar;
+import org.springframework.boot.gradle.util.VersionExtractor;
 
 /**
  * Gradle plugin for Spring Boot.
@@ -68,6 +69,14 @@ public class SpringBootPlugin implements Plugin<Project> {
 	 * @since 2.3.0
 	 */
 	public static final String BOOT_BUILD_IMAGE_TASK_NAME = "bootBuildImage";
+
+	/**
+	 * The name of the {@code developmentOnly} configuration.
+	 * @since 2.3.0
+	 */
+	public static final String DEVELOPMENT_ONLY_CONFIGURATION_NAME = "developmentOnly";
+
+	static final String PRODUCTION_RUNTIME_CLASSPATH_NAME = "productionRuntimeClasspath";
 
 	/**
 	 * The coordinates {@code (group:name:version)} of the

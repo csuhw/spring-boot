@@ -324,7 +324,7 @@ public abstract class Packager {
 			addBootBootAttributesForRepackagingLayout(attributes, (RepackagingLayout) layout);
 		}
 		else {
-			addBootBootAttributesForPlainLayout(attributes, layout);
+			addBootBootAttributesForPlainLayout(attributes);
 		}
 	}
 
@@ -337,7 +337,7 @@ public abstract class Packager {
 		}
 	}
 
-	private void addBootBootAttributesForPlainLayout(Attributes attributes, Layout layout) {
+	private void addBootBootAttributesForPlainLayout(Attributes attributes) {
 		attributes.putValue(BOOT_CLASSES_ATTRIBUTE, getLayout().getClassesLocation());
 		putIfHasLength(attributes, BOOT_LIB_ATTRIBUTE, getLayout().getLibraryLocation("", LibraryScope.COMPILE));
 	}
@@ -505,7 +505,8 @@ public abstract class Packager {
 		}
 
 		private void writeClasspathIndex(RepackagingLayout layout, AbstractJarWriter writer) throws IOException {
-			List<String> names = this.libraries.keySet().stream().map(this::getJarName).collect(Collectors.toList());
+			List<String> names = this.libraries.keySet().stream().map(this::getJarName)
+					.map((name) -> "- \"" + name + "\"").collect(Collectors.toList());
 			writer.writeIndexFile(layout.getClasspathIndexFileLocation(), names);
 		}
 

@@ -52,7 +52,7 @@ class IndexedLayersTests {
 	@Test
 	void iteratorReturnsLayers() throws Exception {
 		IndexedLayers layers = new IndexedLayers(getIndex());
-		assertThat(layers).containsExactly("test", "application");
+		assertThat(layers).containsExactly("test", "empty", "application");
 	}
 
 	@Test
@@ -67,6 +67,19 @@ class IndexedLayersTests {
 		IndexedLayers layers = new IndexedLayers(getIndex());
 		assertThatIllegalStateException().isThrownBy(() -> layers.getLayer(mockEntry("file.jar")))
 				.withMessage("No layer defined in index for file " + "'file.jar'");
+	}
+
+	@Test
+	void getLayerWhenMatchesDirectoryReturnsLayer() throws Exception {
+		IndexedLayers layers = new IndexedLayers(getIndex());
+		assertThat(layers.getLayer(mockEntry("META-INF/MANIFEST.MF"))).isEqualTo("application");
+		assertThat(layers.getLayer(mockEntry("META-INF/a/sub/directory/and/a/file"))).isEqualTo("application");
+	}
+
+	@Test
+	void getLayerWhenFileHasSpaceReturnsLayer() throws Exception {
+		IndexedLayers layers = new IndexedLayers(getIndex());
+		assertThat(layers.getLayer(mockEntry("a b/c d"))).isEqualTo("application");
 	}
 
 	private String getIndex() throws Exception {

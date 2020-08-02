@@ -45,7 +45,14 @@ final class ClassPathIndexFile {
 
 	private ClassPathIndexFile(File root, List<String> lines) {
 		this.root = root;
-		this.lines = lines;
+		this.lines = lines.stream().map(this::extractName).collect(Collectors.toList());
+	}
+
+	private String extractName(String line) {
+		if (line.startsWith("- \"") && line.endsWith("\"")) {
+			return line.substring(3, line.length() - 1);
+		}
+		throw new IllegalStateException("Malformed classpath index line [" + line + "]");
 	}
 
 	int size() {
